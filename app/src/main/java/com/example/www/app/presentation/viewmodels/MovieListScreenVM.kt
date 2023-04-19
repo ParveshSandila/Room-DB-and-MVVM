@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.www.app.domain.models.Movie
 import com.example.www.app.domain.repository.MoviesRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class MovieListScreenVM @Inject constructor(
@@ -23,16 +23,21 @@ class MovieListScreenVM @Inject constructor(
     private val _moviesList = MutableStateFlow<List<Movie>>(emptyList())
     val moviesList = _moviesList.asStateFlow()
 
-    fun search(query:String){
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(300)
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
-            _moviesList.value = if(query.isNotEmpty()){
-                moviesRepo.getMoviesList(query)
-            }else{
-                emptyList()
-            }
+    fun search(query:String){
+        _searchQuery.value = query
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch(Dispatchers.IO) {
+            delay(500)
+            _moviesList.emit(
+                if(query.trim().length > 2){
+                    moviesRepo.getMoviesList(query.trim())
+                }else{
+                    emptyList()
+                }
+            )
         }
     }
 }

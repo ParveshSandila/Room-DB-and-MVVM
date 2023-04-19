@@ -12,7 +12,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 class ViewModelModule {
-
     @Provides
     @ViewModelScoped
     fun provideMoviesRepo(moviesDB: MoviesDB) : MoviesRepo = MoviesRepoImpl(moviesDB)

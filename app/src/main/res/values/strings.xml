@@ -2,4 +2,11 @@
     <string name="app_name">DuckTaleTask</string>
     <string name="movie_list">Movie List</string>
     <string name="movie_details">Movie Details</string>
+    <string name="actors">Actors</string>
+    <string name="year">Year</string>
+    <string name="title">Title</string>
+    <string name="genres">Genres</string>
+    <string name="runtime">Runtime</string>
+    <string name="plot">Plot</string>
+    <string name="no_content">No content</string>
 </resources>

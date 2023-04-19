@@ -2,7 +2,6 @@ package com.example.www.app.core.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.www.app.data.local_db.MoviesDB
 import dagger.Module
 import dagger.Provides
@@ -17,10 +16,10 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideMoviesDB(@ApplicationContext context: Context): MoviesDB = Room.databaseBuilder(
-        context,
-        MoviesDB::class.java,
-        "movies_db"
-    ).build()
+    fun provideMoviesDB(@ApplicationContext context: Context): MoviesDB {
+        return Room.databaseBuilder(context, MoviesDB::class.java, "app.db")
+            .createFromAsset("database/sqlite.db")
+            .build()
+    }
 
 }
